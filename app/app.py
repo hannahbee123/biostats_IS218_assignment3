@@ -25,27 +25,27 @@ def index():
     return render_template('index.html', title='Home', user=user, biostats=result)
 
 
-@app.route('/view/<int:biostat_id>', methods=['GET'])
-def record_view(biostat_id):
+@app.route('/view/<int:data_id>', methods=['GET'])
+def record_view(data_id):
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM biostats WHERE id=%s', biostat_id)
+    cursor.execute('SELECT * FROM biostats WHERE id=%s', data_id)
     result = cursor.fetchall()
-    return render_template('view.html', title='View Form', biostats=result[0])
+    return render_template('view.html', title='View Form', data=result[0])
 
 
-@app.route('/edit/<int:biostat_id>', methods=['GET'])
-def form_edit_get(biostat_id):
+@app.route('/edit/<int:data_id>', methods=['GET'])
+def form_edit_get(data_id):
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM biostats WHERE id=%s', biostat_id)
+    cursor.execute('SELECT * FROM biostats WHERE id=%s', data_id)
     result = cursor.fetchall()
-    return render_template('edit.html', title='Edit Form', biostats=result[0])
+    return render_template('edit.html', title='Edit Form', data=result[0])
 
 
-@app.route('/edit/<int:biostat_id>', methods=['POST'])
-def form_update_post(biostat_id):
+@app.route('/edit/<int:data_id>', methods=['POST'])
+def form_update_post(data_id):
     cursor = mysql.get_db().cursor()
     inputData = (request.form.get('biostats_1'), request.form.get('Column_2'), request.form.get('Column_3'),
-                 request.form.get('Column_4'), request.form.get('Column_5'), biostat_id)
+                 request.form.get('Column_4'), request.form.get('Column_5'), data_id)
     sql_update_query = """UPDATE biostats t SET t.biostats_1 = %s, t.Column_2 = %s, t.Column_3 = %s, t.Column_4 = 
     %s, t.Column_5 = %s WHERE t.id = %s """
     cursor.execute(sql_update_query, inputData)
@@ -69,11 +69,11 @@ def form_insert_post():
     return redirect("/", code=302)
 
 
-@app.route('/delete/<int:biostat_id>', methods=['POST'])
-def form_delete_post(biostat_id):
+@app.route('/delete/<int:data_id>', methods=['POST'])
+def form_delete_post(data_id):
     cursor = mysql.get_db().cursor()
     sql_delete_query = """DELETE FROM biostats WHERE id = %s """
-    cursor.execute(sql_delete_query, biostat_id)
+    cursor.execute(sql_delete_query, data_id)
     mysql.get_db().commit()
     return redirect("/", code=302)
 
@@ -88,10 +88,10 @@ def api_browse() -> str:
     return resp
 
 
-@app.route('/api/v1/biostats/<int:biostat_id>', methods=['GET'])
-def api_retrieve(biostat_id) -> str:
+@app.route('/api/v1/biostats/<int:data_id>', methods=['GET'])
+def api_retrieve(data_id) -> str:
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM biostats WHERE id=%s', biostat_id)
+    cursor.execute('SELECT * FROM biostats WHERE id=%s', data_id)
     result = cursor.fetchall()
     json_result = json.dumps(result);
     resp = Response(json_result, status=200, mimetype='application/json')
@@ -104,14 +104,14 @@ def api_add() -> str:
     return resp
 
 
-@app.route('/api/v1/biostats/<int:biostat_id>', methods=['PUT'])
-def api_edit(biostat_id) -> str:
+@app.route('/api/v1/biostats/<int:data_id>', methods=['PUT'])
+def api_edit(data_id) -> str:
     resp = Response(status=201, mimetype='application/json')
     return resp
 
 
 @app.route('/api/biostats/<int:biostat_id>', methods=['DELETE'])
-def api_delete(biostat_id) -> str:
+def api_delete(data_id) -> str:
     resp = Response(status=210, mimetype='application/json')
     return resp
 
