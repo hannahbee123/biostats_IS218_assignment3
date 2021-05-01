@@ -4,14 +4,9 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
-from logic import square_of_number_plus_nine
+from flask import Markup
 
-app = Flask(
-    __name__,
-    instance_relative_config=False,
-    template_folder="templates",
-    static_folder="static"
-)
+app = Flask(__name__)
 
 mysql = MySQL(cursorclass=DictCursor)
 
@@ -25,8 +20,7 @@ mysql.init_app(app)
 
 @app.route("/")
 def hello():
-    value = square_of_number_plus_nine(5)
-    return value
+    return Markup("<h1>Hello World!</h1>")
 
 
 @app.route('/', methods=['GET'])
