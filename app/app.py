@@ -6,7 +6,10 @@ from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
 from flask import Markup
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="templates"
+)
 
 mysql = MySQL(cursorclass=DictCursor)
 
@@ -20,7 +23,7 @@ mysql.init_app(app)
 
 @app.route("/")
 def hello():
-    return Markup("<h1>Hello World!</h1>")
+    return render_template("index.html")
 
 
 @app.route('/', methods=['GET'])
