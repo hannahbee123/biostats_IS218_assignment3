@@ -4,7 +4,7 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
-from flask import make_response, request
+from flask import make_response, request, jsonify
 
 app = Flask(__name__)
 
@@ -22,8 +22,9 @@ mysql.init_app(app)
 def hello():
     if request.method != 'GET':
         return make_response('Malformed request', 400)
+    my_dict = {'key': 'dictionary value'}
     headers = {"Content-Type": "application/json"}
-    return make_response('it worked!', 200, headers)
+    return make_response(jsonify(my_dict), 200, headers)
 
 
 @app.route('/', methods=['GET'])
