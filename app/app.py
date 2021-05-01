@@ -4,12 +4,9 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
-from flask import Markup
+from flask import make_response, request
 
-app = Flask(
-    __name__,
-    template_folder="templates"
-)
+app = Flask(__name__)
 
 mysql = MySQL(cursorclass=DictCursor)
 
@@ -21,9 +18,12 @@ app.config['MYSQL_DATABASE_DB'] = 'biostatsData'
 mysql.init_app(app)
 
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def hello():
-    return render_template("index.html")
+    if request.method != 'GET':
+        return make_response('Malformed request', 400)
+    headers = {"Content-Type": "application/json"}
+    return make_response('it worked!', 200, headers)
 
 
 @app.route('/', methods=['GET'])
