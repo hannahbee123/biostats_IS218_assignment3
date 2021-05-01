@@ -4,8 +4,15 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+from logic import square_of_number_plus_nine
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    instance_relative_config=False,
+    template_folder="templates",
+    static_folder="static"
+)
+
 mysql = MySQL(cursorclass=DictCursor)
 
 app.config['MYSQL_DATABASE_HOST'] = 'db'
@@ -15,9 +22,12 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'biostatsData'
 mysql.init_app(app)
 
+
 @app.route("/")
 def hello():
-    return "Hello World!"
+    value = square_of_number_plus_nine(5)
+    return value
+
 
 @app.route('/', methods=['GET'])
 def index():
