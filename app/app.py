@@ -17,6 +17,8 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'biostatsData'
 mysql.init_app(app)
 
+'''
+FLASK HOMEWORK
 
 @app.route("/", methods=['GET'])
 def hello():
@@ -25,7 +27,7 @@ def hello():
     my_dict = {'key': 'dictionary value'}
     headers = {"Content-Type": "application/json"}
     return make_response(jsonify(my_dict), 200, headers)
-
+'''
 
 @app.route('/', methods=['GET'])
 def index():
